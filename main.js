@@ -39,9 +39,11 @@ const path = require('path');
 const http = require('http');
 const express = require("express");
 const electron = require('electron');
-const isDev = require('electron-is-dev');
 const Store = require('electron-store');
-const store = new Store();
+const store = new Store()
+
+var isDev
+(async () => { isDev = await import('electron-is-dev'); })()
 
 const {app, Menu, TouchBar} = electron;
 const ipc = electron.ipcMain;
@@ -344,14 +346,16 @@ function createConsole() {
         // titleBarStyle: "hidden",
         webPreferences: {
             nodeIntegration: true,
-            nativeWindowOpen: true
+            nativeWindowOpen: true,
+            contextIsolation: false
         }
     });
-    conWindow.loadURL(url.format({
-        pathname: path.join(__dirname, urlconsole),
-        protocol: 'file:',
-        slashes: true
-    }))
+    // conWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, urlconsole),
+    //     protocol: 'file:',
+    //     slashes: true
+    // }))
+    conWindow.loadURL(path.join(__dirname, urlconsole));
     conWindow.webContents.on('did-finish-load', () => {
         conWindow.webContents.send('logBuff', logBuffer);
     });
