@@ -39,6 +39,7 @@ const path = require('path');
 const http = require('http');
 const express = require("express");
 const electron = require('electron');
+// const fetch = (...args) => import('node-fetch').then(({default: fetch})
 const Store = require('electron-store');
 const store = new Store()
 
